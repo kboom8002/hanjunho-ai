@@ -1,0 +1,258 @@
+hanjunho.ai AEO·SEO·Schema 기술 명세서 v1.0
+부제: Webflow 기반 질문형 정치 플랫폼을 위한 검색·AI 노출·구조화데이터 구현 기준서
+1. 문서 목적
+이 문서는 hanjunho.ai의 웹플로우 구축 및 개편 과정에서, 검색엔진과 AI 답변엔진 관점에서 어떤 기술적 원칙을 적용해야 하는지 정리한 기준 문서다. 이 문서의 목적은 단순한 “SEO 체크리스트”를 만드는 것이 아니다. 목적은 첫째, 페이지 유형별로 어떤 메타 정보와 구조화데이터를 적용할지 명확히 정하는 것, 둘째, Answer Card와 이슈브리핑, 프로필 페이지의 성격 차이를 기술적으로 분리하는 것, 셋째, 개발자가 Webflow의 page settings, collection template, custom code 영역에서 무엇을 어디에 넣어야 하는지 혼동 없이 구현하도록 만드는 것이다.
+이 문서는 특히 다음 질문에 답해야 한다.첫째, 홈과 허브 페이지는 어떤 title/meta 규칙을 따라야 하는가.둘째, Answer Card 상세페이지에는 FAQPage를 어느 수준까지 써야 하는가.셋째, 이슈브리핑 상세페이지는 왜 Article 중심으로 가야 하는가.넷째, 한준호와 김태영 교수 프로필 페이지는 왜 ProfilePage + Person 조합이 적절한가.다섯째, Webflow에서 <head> 안에 무엇을 넣고, 무엇을 넣으면 안 되는가. Google은 <head> 안에 유효한 요소만 두어야 하며, 잘못된 요소가 먼저 나오면 그 뒤 메타데이터를 Google이 무시할 수 있다고 명시한다. (Google for Developers)
+2. 이 문서에서 말하는 AEO의 의미
+이 문서에서 AEO는 “Answer Engine Optimization”의 실무적 의미로 사용한다. 즉, 질문형 콘텐츠를 구조화해 검색엔진과 AI 시스템이 페이지의 성격, 핵심 답변, 작성 주체, 검수 주체, 최신성, 페이지 간 관계를 더 잘 이해하게 만드는 작업이다. 여기서 중요한 것은 과장된 기술 용어가 아니라, 실제로 Google이 읽을 수 있는 신호를 정리하는 일이다.
+Google은 검색 결과의 snippet을 주로 페이지 본문에서 자동 생성하며, meta description은 페이지를 더 잘 설명할 때 보조적으로 사용할 수 있다고 설명한다. 다시 말해, 구조화데이터나 메타 태그만 넣는다고 되는 것이 아니라, 페이지 본문 상단에 질문과 답, 기사 요약, 인물 역할 정의가 실제로 잘 보여야 한다. 최근 Google 문서 업데이트에서도 snippet의 1차 출처가 structured data나 meta description이 아니라 페이지 내용 자체라는 점을 다시 명확히 했다. (Google for Developers)
+따라서 hanjunho.ai의 AEO는 다음 네 축으로 이해해야 한다.
+첫째, 본문 상단 구조 최적화다.둘째, title/meta/OG 정렬이다.셋째, 페이지 유형별 schema 분리다.넷째, 내부 링크 구조와 작성·검수 주체의 명시다.
+3. hanjunho.ai의 페이지 유형별 기술 분류
+hanjunho.ai의 페이지는 검색과 AI 이해 관점에서 다음 다섯 가지 유형으로 나뉜다.
+첫 번째는 허브 페이지다. Ask AI 홈, 5대 비전 클리어맵 인덱스, 이슈브리핑 인덱스, 팩트 인증센터 메인, 팩트체크 인덱스가 여기에 들어간다. 허브 페이지는 많은 콘텐츠로 들어가는 관문이므로 site-level 또는 aggregation-level description이 적합하다. Google도 홈이나 집계 페이지에는 사이트 수준 설명을, 개별 상세 페이지에는 페이지 수준 설명을 쓰라고 권장한다. (Google for Developers)
+두 번째는 정답 정본 페이지다. Answer Card 상세페이지가 여기에 해당한다. 질문 하나에 대해 답 하나를 압축적으로 보여주는 구조이므로, 질문과 3문장 답, 실행 방안, 근거가 상단부터 분명해야 한다.
+세 번째는 기사형 해설 정본 페이지다. 이슈브리핑 상세페이지가 여기에 해당한다. 이 페이지는 언론 보도 기반 해설이므로 FAQ보다 Article 계열의 성격이 더 강하다. Google은 Article, NewsArticle, BlogPosting을 기사형 페이지에서 사용할 수 있다고 설명하고, title text, image, date 정보 이해에 도움을 줄 수 있다고 안내한다. (Google for Developers)
+네 번째는 검증 정본 페이지다. 팩트체크 상세가 여기에 들어간다. 이 페이지는 쟁점, 검증 결과, 근거, 관련 카드 연결이 핵심이다.
+다섯 번째는 프로필 정본 페이지다. 한준호 프로필과 김태영 교수 프로필이 여기에 속한다. Google은 ProfilePage structured data를 단일 인물 또는 조직을 주된 초점으로 다루는 페이지에 적합하다고 설명한다. (Google for Developers)
+4. 전역 SEO/AEO 기본 원칙
+4.1 페이지마다 고유한 title과 description을 둔다
+Google은 동일하거나 유사한 meta description을 사이트 전체에 반복하는 것은 도움이 되지 않으며, 가능하면 각 페이지를 정확히 설명하는 고유한 description을 만들라고 권장한다. 또 데이터베이스형 사이트에서는 프로그램적으로 description을 생성하는 것도 적절하다고 설명한다. 따라서 hanjunho.ai에서는 Answer Card의 Snippet, 이슈브리핑의 Briefing Summary, 프로필의 Short Summary를 중심으로 페이지별 description을 자동 생성하는 것이 적절하다. (Google for Developers)
+4.2 meta keywords는 사용하지 않는다
+Google은 keywords meta tag를 검색 랭킹에 사용하지 않는다고 오래전부터 분명히 밝혀 왔다. 따라서 hanjunho.ai에서 meta keywords는 운영 비용만 늘리고 실제 효과는 없으므로 넣지 않는다. (Google for Developers)
+4.3 <head>는 반드시 유효한 HTML로 유지한다
+Google은 <head> 안에 유효하지 않은 요소가 들어가면, 그 뒤에 오는 메타데이터 처리가 깨질 수 있다고 설명한다. 따라서 Webflow custom code로 head에 삽입할 때는 title, meta, link, script, style, base, noscript, template 외 요소를 넣지 않는다. 특히 img, iframe 같은 태그를 head 안에 넣지 않는다. (Google for Developers)
+4.4 Rich result를 KPI로 삼지 말고, 이해도 향상을 KPI로 삼는다
+특히 FAQPage는 주의가 필요하다. Google은 FAQ rich results가 현재 well-known, authoritative government-focused 또는 health-focused 사이트 중심으로만 제공된다고 명시한다. 따라서 hanjunho.ai는 FAQPage를 넣더라도 “리치 결과를 보장받기 위한 장치”로 생각하면 안 된다. 이 사이트에서 FAQPage는 질문-답 구조를 Google에 더 명확히 알리는 보조적 의미로 사용해야 한다. (Google for Developers)
+4.5 본문 상단 구조가 메타보다 중요하다
+Google은 snippet이 주로 페이지 내용에서 자동 생성된다고 분명히 말한다. 따라서 Answer Card 상세의 질문 말풍선과 Snippet 박스, 이슈브리핑의 Summary와 핵심 쟁점, 프로필 페이지의 역할 정의 문장은 모두 상단 본문에 실제로 노출되어야 한다. 메타 description은 보조 수단이지, 본문을 대체하지 않는다. (Google for Developers)
+5. 페이지 유형별 메타 전략
+5.1 Ask AI 홈
+홈은 aggregation page이므로 사이트 수준 description이 적절하다. title은 짧되, 이 사이트가 무엇을 하는지 분명히 드러내야 한다.
+권장 title:한준호 경기도지사 후보 | 정책·이슈 답변·팩트체크 공식 플랫폼
+권장 meta description:경기도지사 후보 한준호의 교통, 일자리, 주거, 돌봄, 교육, 행정 혁신 공약을 질문형으로 확인하세요. 핵심 이슈 답변, 정책 근거, 팩트체크를 한곳에서 제공합니다.
+홈 메타의 목적은 검색엔진에 “이건 후보 개인 홈페이지가 아니라 질문형 정책 허브”라는 점을 알리는 것이다.
+5.2 5대 비전 클리어맵 인덱스
+권장 title:5대 비전 클리어맵 | 한준호 정책 질문 허브
+권장 meta description:출퇴근, 일자리, 가족, 투명한 도정, 개혁적 민생까지. 경기도민의 질문을 기준으로 한준호 후보의 정책 답변을 탐색할 수 있는 공식 허브입니다.
+이 페이지는 허브 페이지이므로 상세 설명보다 범위를 잘 요약해야 한다.
+5.3 Answer Card 상세
+권장 title 패턴:{Name} | 한준호 클리어맵
+권장 description 패턴:{Snippet}
+이 구조가 좋은 이유는 Google이 프로그램적 description 생성을 허용하고 권장하기 때문이다. Snippet은 이미 질문에 대한 공식 요약이므로 메타 설명에 그대로 재사용하기 가장 적합하다. (Google for Developers)
+5.4 이슈브리핑 상세
+권장 title 패턴:{Briefing Title} | 한준호 이슈브리핑
+권장 description 패턴:{Briefing Summary}
+이슈브리핑은 기사형 해설 정본이므로, 브리핑 제목과 2~3문장 요약이 핵심이다.
+5.5 프로필 상세
+권장 title 패턴 예시:한준호 | 경기도민의 질문에 답하는 공식 발화자김태영 교수 | hanjunho.ai 총괄 검수자 프로필
+권장 description 패턴 예시:한준호 페이지는 역할, 주요 이력, 정책 발화 원칙, 대표 답변 연결을 요약한다.김태영 페이지는 지방자치·공공정책·평가·기본사회 전문성과 검수 역할을 요약한다.
+Google은 프로필 페이지의 주된 초점이 단일 인물 또는 조직이어야 한다고 설명하므로, 프로필 페이지 description도 반드시 그 사람의 역할 중심으로 써야 한다. (Google for Developers)
+6. OG(Open Graph) 운영 원칙
+Open Graph는 Google 검색을 위한 기술은 아니지만, 카카오톡·메신저·SNS 공유 미리보기 품질을 위해 중요하다. hanjunho.ai는 특히 카드 딥링크와 브리핑 딥링크 공유가 중요하므로, OG는 필수적으로 관리한다.
+운영 원칙은 단순해야 한다.
+홈은 사이트 대표 이미지 1장을 쓴다.Answer Card는 카드별 OG image가 있으면 그 이미지를 쓰고, 없으면 공통 대표 이미지를 쓴다.이슈브리핑은 브리핑용 대표 이미지가 있으면 쓰고, 없으면 이슈브리핑 공통 이미지를 쓴다.프로필은 각 인물 대표 이미지를 쓴다.
+title과 description은 기본적으로 검색용 title/meta와 같은 규칙을 따른다.즉, 별도 OG용 문장을 새로 만들지 말고, 이미 승인된 카피를 재사용하는 것이 좋다.
+7. Breadcrumb 전략
+Google은 breadcrumb trail이 페이지의 사이트 계층상 위치를 보여주고, 검색 결과와 사용자 탐색 이해에 도움을 준다고 설명한다. 따라서 hanjunho.ai의 상세페이지에는 화면상 breadcrumb와 structured data breadcrumb를 모두 넣는 것이 좋다. (Google for Developers)
+운영 원칙은 다음과 같다.
+Answer Card 상세:홈 > 5대 비전 클리어맵 > Category > 카드 제목
+이슈브리핑 상세:홈 > 이슈브리핑 > Issue Topic > 브리핑 제목
+한준호 프로필:홈 > 팩트 인증센터 > 한준호
+김태영 교수 프로필:홈 > 팩트 인증센터 > 김태영 교수
+중요한 점은, breadcrumb 텍스트와 URL 구조, structured data 안의 name이 서로 일치해야 한다는 것이다.
+8. Answer Card 상세의 schema 전략
+8.1 권장 조합
+Answer Card 상세에는 다음 조합을 권장한다.
+BreadcrumbList + WebPage + FAQPage
+이 중 핵심은 FAQPage가 아니라 질문-답 구조의 명시다. 앞서 말했듯, FAQ rich result 자체를 기대하면 안 된다. Google은 FAQ rich results를 정부·보건 중심 권위 사이트에 제한적으로 제공한다고 명시한다. 따라서 hanjunho.ai에서는 FAQPage를 “검색결과 예쁘게 보이기 위한 장치”가 아니라, 질문과 답의 관계를 더 명확히 알려주는 구조화데이터로 사용한다. (Google for Developers)
+8.2 FAQPage를 쓸 때 지켜야 할 원칙
+Google은 FAQPage를 사용할 때 question과 answer가 실제 페이지에 보여야 하며, 광고 목적에 쓰지 말아야 하고, 같은 FAQ를 여러 페이지에 반복 마크업하지 말라고 설명한다. 따라서 hanjunho.ai에서 FAQPage를 쓸 때는 다음을 꼭 지켜야 한다. (Google for Developers)
+첫째, Question.name은 반드시 화면의 User Query와 같아야 한다.둘째, Answer.text는 반드시 화면의 Snippet과 같아야 한다.셋째, 페이지에 안 보이는 추가 문장을 schema에 몰래 넣으면 안 된다.넷째, 하나의 카드 페이지에 하나의 질문-답 페어만 넣는 것이 가장 안전하다.
+8.3 WebPage를 같이 쓰는 이유
+WebPage는 페이지 자체의 성격, URL, 설명, 수정일, 저자 정보를 보완하는 역할을 한다.특히 dateModified는 업데이트일과 연결해 최신성 신호를 보강할 수 있다.
+8.4 권장 JSON-LD 예시
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "홈",
+          "item": "https://hanjunho.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "5대 비전 클리어맵",
+          "item": "https://hanjunho.ai/clearmap"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{wf {\"path\":\"category\",\"type\":\"PlainText\"} }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "{{wf {\"path\":\"name\",\"type\":\"PlainText\"} }}"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "name": "{{wf {\"path\":\"name\",\"type\":\"PlainText\"} }} | 한준호 클리어맵",
+      "description": "{{wf {\"path\":\"snippet\",\"type\":\"PlainText\"} }}",
+      "dateModified": "{{wf {\"path\":\"last-updated\",\"type\":\"Date\"} }}"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "{{wf {\"path\":\"user-query\",\"type\":\"PlainText\"} }}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{wf {\"path\":\"snippet\",\"type\":\"PlainText\"} }}"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+이 예시는 Webflow collection template에서 CMS 필드를 매핑하는 기본 형태다.
+9. 이슈브리핑 상세의 schema 전략
+9.1 권장 조합
+이슈브리핑 상세에는 다음 조합을 권장한다.
+BreadcrumbList + WebPage + Article
+이 페이지는 FAQ보다 기사형 해설에 가깝다. Google은 Article structured data를 뉴스, 블로그, 스포츠 기사 페이지 등에서 사용할 수 있다고 설명하며, title text, image, date 정보 이해에 도움을 줄 수 있다고 안내한다. Google News 노출에 Article markup이 필수는 아니지만, 페이지가 기사형 콘텐츠라는 점을 더 명확히 전달하는 데 유용하다. (Google for Developers)
+9.2 Article과 NewsArticle 중 무엇을 쓸 것인가
+실무적으로는 1차에서 전부 Article로 통일하는 것이 좋다.왜냐하면 hanjunho.ai의 브리핑은 순수 뉴스 원문이 아니라, 언론 보도를 기반으로 재구성한 해설 페이지이기 때문이다. 뉴스 속보성 페이지 몇 개만 예외로 NewsArticle로 바꿀 수는 있지만, 초기에는 Article 하나로 고정하는 편이 운영상 안전하다.
+9.3 author markup 원칙
+Google은 Article markup의 author에 Person 또는 Organization을 쓰라고 하며, author.name에는 이름만 넣고 소개 문구를 섞지 말라고 권장한다. 또한 가능하면 author.url처럼 저자를 식별할 수 있는 페이지를 연결하는 것이 좋다고 설명한다. 따라서 브리핑의 author는 한준호 캠프 AI 정책본부 같은 조직형 작성 주체로 두고, url은 해당 프로필 페이지나 팩트 인증센터 페이지로 연결하는 것이 좋다. (Google for Developers)
+9.4 datePublished / dateModified 원칙
+Google은 Article markup에서 datePublished와 dateModified를 가능한 한 제공하고, ISO 8601 형식 사용을 권장한다. hanjunho.ai에서는 datePublished를 대표 기사 발행일로 쓸지, 브리핑 자체 발행일로 쓸지 전략을 정해야 하는데, 브리핑은 자체 페이지이므로 브리핑 자체 게시일을 datePublished, 최근 수정일을 dateModified로 쓰는 것이 더 자연스럽다. 대표 기사 날짜는 화면 본문 메타 블록에서 별도 노출하면 된다. 다만 운영상 필드가 부족하면 초기에는 Source Published Date를 활용하되, 이후 브리핑 자체 발행일 필드를 추가하는 것이 좋다. (Google for Developers)
+9.5 권장 JSON-LD 예시
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "홈",
+          "item": "https://hanjunho.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "이슈브리핑",
+          "item": "https://hanjunho.ai/issues"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{wf {\"path\":\"issue-topic\",\"type\":\"PlainText\"} }}"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "name": "{{wf {\"path\":\"briefing-title\",\"type\":\"PlainText\"} }} | 한준호 이슈브리핑",
+      "description": "{{wf {\"path\":\"briefing-summary\",\"type\":\"PlainText\"} }}",
+      "dateModified": "{{wf {\"path\":\"last-updated\",\"type\":\"Date\"} }}"
+    },
+    {
+      "@type": "Article",
+      "headline": "{{wf {\"path\":\"briefing-title\",\"type\":\"PlainText\"} }}",
+      "description": "{{wf {\"path\":\"briefing-summary\",\"type\":\"PlainText\"} }}",
+      "datePublished": "{{wf {\"path\":\"published-date\",\"type\":\"Date\"} }}",
+      "dateModified": "{{wf {\"path\":\"last-updated\",\"type\":\"Date\"} }}",
+      "author": {
+        "@type": "Organization",
+        "name": "{{wf {\"path\":\"author-name\",\"type\":\"PlainText\"} }}",
+        "url": "https://hanjunho.ai/trust-center"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "hanjunho.ai",
+        "url": "https://hanjunho.ai/"
+      }
+    }
+  ]
+}
+</script>
+핵심은 Article의 headline, description, author가 화면에 실제로 보이는 정보와 일치해야 한다는 점이다.
+10. 프로필 페이지의 schema 전략
+한준호 프로필과 김태영 교수 프로필은 모두 ProfilePage + Person 조합이 적절하다. Google은 ProfilePage markup이 단일 사람이나 조직을 주된 초점으로 다루는 페이지에 적합하다고 설명하고, author bio page나 employee page 같은 사례도 유효하다고 제시한다. hanjunho.ai의 두 프로필 페이지는 정확히 이런 유형에 해당한다. (Google for Developers)
+10.1 ProfilePage의 핵심 원칙
+페이지의 primary focus가 단일 인물이어야 한다.즉 프로필 페이지 안에 너무 많은 다른 요소가 섞이면 안 된다.한준호 페이지는 공식 발화자 역할 설명과 대표 카드 연결 중심이어야 하고, 김태영 페이지는 총괄 검수자 역할 설명과 검수 원칙 중심이어야 한다.
+Google은 profile page에서 image는 실제 인물을 대표해야 하며, placeholder를 쓰지 말라고 안내한다. 따라서 테스트용 기본 아이콘이나 임시 이미지가 남아 있으면 안 된다. (Google for Developers)
+10.2 권장 JSON-LD 예시
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "{{wf {\"path\":\"name\",\"type\":\"PlainText\"} }}",
+    "description": "{{wf {\"path\":\"short-summary\",\"type\":\"PlainText\"} }}",
+    "image": "{{wf {\"path\":\"profile-image\",\"type\":\"ImageRef\"} }}",
+    "url": "{{wf {\"path\":\"url\",\"type\":\"Link\"} }}"
+  }
+}
+</script>
+운영상 더 넣고 싶다면 jobTitle, worksFor, sameAs 등을 추가할 수 있지만, 1차에서는 이름, 설명, 이미지, URL 정도만으로도 충분하다.
+11. 팩트체크 페이지의 schema 전략
+팩트체크는 구조화데이터 관점에서 Answer Card처럼 FAQPage로 밀어붙이기보다, 기본적으로 WebPage + BreadcrumbList 중심으로 운영하는 것이 안전하다. 만약 검증 항목이 질문-답 형태가 아주 분명하고 페이지 구조도 1질문 1답으로 명확하다면 FAQPage를 보조적으로 사용할 수 있지만, 이는 선택사항이다. 핵심은 검증 구조가 본문에 잘 드러나는 것이다.
+따라서 1차 구축에서는 팩트체크 상세를 다음처럼 운영하는 것을 권장한다.
+BreadcrumbList + WebPage
+이후 페이지 구조가 충분히 질문-답 1:1 형태로 정리되면 FAQPage 보조 적용을 검토한다.
+12. Webflow 구현 위치별 기술 지침
+12.1 Page Settings와 Collection Template Settings
+정적 페이지는 Page Settings에서 title, description, OG를 넣는다.컬렉션 상세는 Collection Template Settings에서 title, description, OG를 CMS 필드에 매핑한다.
+예를 들어 Answer Card template의 title은{Name} | 한준호 클리어맵형태로 넣고, description은 Snippet으로 매핑한다.
+이슈브리핑 template의 title은{Briefing Title} | 한준호 이슈브리핑형태로 넣고, description은 Briefing Summary로 매핑한다.
+12.2 Custom Code 위치
+schema는 반드시 <head> 안에 넣는다.Google은 page metadata의 주된 위치가 <head>이며, 유효한 HTML로 넣어야 한다고 설명한다. (Google for Developers)
+Webflow에서는 컬렉션 템플릿의 page settings 안 Custom Code > Inside <head> 영역을 활용하는 것이 가장 일반적이다.
+12.3 head 안에 넣지 말아야 할 것
+img, iframe 같은 요소는 head 안에 두지 않는다.head 안에 invalid element가 먼저 나오면, 그 뒤 메타데이터가 무시될 수 있다. (Google for Developers)
+13. Snippet 제어 전략
+Google은 snippet을 주로 페이지 내용에서 자동 생성하므로, hanjunho.ai는 “메타 태그만 예쁘게 만드는 SEO”를 해서는 안 된다. Answer Card는 질문 말풍선과 Snippet 박스를 본문 최상단에 두어야 하고, 이슈브리핑은 Summary와 핵심 쟁점을 상단에 두어야 한다. 프로필 페이지는 역할 정의 문장을 첫 화면에 두어야 한다. 이것이 실질적인 snippet 품질 개선 전략이다. (Google for Developers)
+또 필요하면 특정 페이지에서 nosnippet, max-snippet, data-nosnippet 같은 제어 수단을 쓸 수 있지만, hanjunho.ai의 기본 전략은 snippet을 막는 것이 아니라 좋은 상단 본문으로 자동 snippet 품질을 높이는 것이다. Google은 이러한 snippet 제어 메타와 속성을 지원한다고 설명한다. (Google for Developers)
+14. canonical 운영 원칙
+Article 문서에서 Google은 멀티파트 기사일 경우 rel=canonical이 각 페이지 또는 view-all page를 가리키도록 하라고 설명한다. hanjunho.ai는 1차에서는 멀티파트 구조를 쓰지 않을 예정이므로, 각 정본 상세페이지는 자기 자신을 canonical로 두는 것이 기본 원칙이다. 동일 내용을 여러 URL로 노출하지 말고, 카드와 브리핑의 정본 URL을 하나씩만 운영한다. (Google for Developers)
+15. sitemap·검증·배포 절차
+Google의 structured data 문서들은 공통적으로 다음 절차를 권장한다.첫째, required/recommended 속성을 넣는다.둘째, Rich Results Test로 확인한다.셋째, URL Inspection으로 Google이 페이지를 어떻게 보는지 점검한다.넷째, robots.txt, noindex, 로그인 제한 등으로 크롤링이 막히지 않았는지 확인한다.다섯째, 변경 사항을 반영한 sitemap을 제출한다. (Google for Developers)
+hanjunho.ai의 배포 체크 절차는 다음처럼 간단히 고정하는 것이 좋다.
+정적 메타 확인컬렉션 템플릿 메타 확인schema validateURL Inspectionsitemap 갱신재색인 요청
+이 절차를 운영 플레이북과 QA 문서에도 그대로 연결한다.
+16. 개발자가 반드시 지켜야 할 구현 원칙
+첫째, title과 description은 페이지 유형별 규칙을 따라 자동 생성하되, 필요한 경우 override 필드로 예외 처리한다.
+둘째, Answer Card FAQPage의 question/answer는 화면 문구와 완전히 일치해야 한다.
+셋째, 이슈브리핑은 FAQPage로 가지 않고 Article 중심으로 간다.
+넷째, ProfilePage는 한준호와 김태영 교수처럼 단일 인물을 주제로 하는 상세페이지에만 적용한다.
+다섯째, breadcrumb는 화면과 schema 모두에 구현한다.
+여섯째, keywords meta tag는 넣지 않는다.
+일곱째, head 안에는 유효한 요소만 둔다.
+여덟째, 메타 description만 믿지 말고 상단 본문 구조를 우선 최적화한다.
+17. QA용 기술 체크 항목
+개발 완료 후 최소한 다음은 반드시 확인해야 한다.
+홈, 클리어맵, 브리핑, 프로필의 title/meta가 서로 다르고 고유한가.Answer Card template의 FAQPage가 실제 User Query와 Snippet을 그대로 반영하는가.이슈브리핑 template의 Article가 headline, description, author, date와 일치하는가.프로필 페이지의 ProfilePage가 단일 인물 중심 구조와 맞는가.breadcrumb가 화면과 structured data에 모두 들어가는가.head 안에 invalid element가 없는가.Rich Results Test에서 critical error가 없는가.URL Inspection에서 크롤링 차단이 없는가.sitemap 제출이 최신 상태인가. (Google for Developers)
+18. 최종 요약
+이 기술 명세서의 결론은 분명하다.
+hanjunho.ai에서 AEO와 SEO의 핵심은 구조화데이터를 많이 넣는 것이 아니라, 페이지 유형에 맞는 메타와 schema를 정확히 분리하고, 페이지 상단 본문 구조를 명확히 만드는 것이다.
+Answer Card는 질문-답 구조가 선명한 정답 페이지이므로 BreadcrumbList + WebPage + FAQPage가 적절하다. 단, FAQ rich result 자체를 기대하면 안 된다. (Google for Developers)
+이슈브리핑은 언론 보도 기반 해설 페이지이므로 BreadcrumbList + WebPage + Article이 적절하다. Google도 Article markup이 기사형 페이지의 title text, image, date 이해에 도움을 줄 수 있다고 안내한다. (Google for Developers)
+한준호와 김태영 교수 프로필은 ProfilePage + Person 조합이 적절하다. Google은 단일 인물이나 조직이 페이지의 주된 초점일 때 ProfilePage를 사용하라고 설명한다. (Google for Developers)
+그리고 무엇보다 중요한 것은, Google이 snippet을 주로 페이지 본문에서 생성한다는 사실이다. 그러므로 hanjunho.ai의 검색·AI 노출 전략은 메타 태그 장난이 아니라, 첫 화면에서 질문, 답, 쟁점, 역할이 분명히 보이게 만드는 정보 설계여야 한다. (Google for Developers)
+이 문서는 이후 QA/UAT 체크리스트와 런치·운영 플레이북의 기술적 기준 문서로 사용한다.
