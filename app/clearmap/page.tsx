@@ -57,9 +57,22 @@ export default async function ClearMapPage({ searchParams }: Props) {
     console.error("Supabase client init error, missing credentials typically:", e);
     // Fallback Mock Data if env is not set or DB access fails
     cards = [
-      { id: '1', name: "GTX-R 노선 신설 계획 (Mock)", policy_domain: "경기 교통", category: "내 출퇴근", updated_at: "2024-10-15T00:00:00Z" },
+      { id: '1', name: "GTX-R 노선 신설 계획 (Mock)", policy_domain: "경기 교통", category: "내 출퇴근", updated_at: "2024-10-15T00:00:00Z", user_query: 'GTX-R은 무엇이 다른가요?', snippet: '이동 시간을 30% 단축하는 핵심 정책입니다.' },
     ];
   }
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": cards.filter(c => c.user_query && c.snippet).map(c => ({
+      "@type": "Question",
+      "name": c.user_query,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": c.snippet
+      }
+    }))
+  };
 
   // Generate category links
   const getCategoryLink = (cat?: string) => {
@@ -72,8 +85,12 @@ export default async function ClearMapPage({ searchParams }: Props) {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="text-center mb-12">
-        <h1 className="text-h1 mb-4">5대 비전 클리어맵</h1>
+        <h1 className="text-h1 mb-4">5대 비전 클리어맵 | 한준호 공식 정책 질문 허브</h1>
         <p className="text-body-lg text-neutral-600 max-w-2xl mx-auto mb-8">
           경기도민의 일상과 가장 가까운 다섯 가지 질문 축으로 정책을 정리했습니다. 궁금한 주제부터 바로 확인해보세요.
         </p>
@@ -128,7 +145,7 @@ export default async function ClearMapPage({ searchParams }: Props) {
                     <Chip variant="base">{card.policy_domain}</Chip>
                     <Chip variant="primary">{card.category}</Chip>
                   </div>
-                  <h3 className="text-h3 mb-2 hover:text-brand-700">{card.name}</h3>
+                  <div className="text-h3 mb-2 font-bold text-neutral-900 group-hover:text-brand-700">{card.name}</div>
                   <p className="text-caption text-brand-600 bg-brand-050 inline-block px-2 py-1 rounded">김태영 교수 검수</p>
                 </div>
                 <div className="mt-8 flex justify-between items-center border-t border-line-default pt-4">

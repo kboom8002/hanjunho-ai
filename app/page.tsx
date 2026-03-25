@@ -33,8 +33,35 @@ export default function Home() {
     { title: "개혁적 민생", desc: "주거·상권·균형발전" }
   ];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "GTX-R은 기존 교통대책과 무엇이 다른가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "GTX-R은 기존 노선 대비 이동 시간을 30% 단축하며, 2026년 착공을 목표로 도비 투입이 논의되는 한준호 후보의 핵심 교통 정책입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "청년 일자리 10만 개는 어떻게 가능한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "데이터센터 클러스터와 AI 혁신 밸리를 조성하여 양질의 민간 일자리를 창출하고 글로벌 기업 유치로 지속성을 담보합니다."
+        }
+      }
+    ]
+  };
+
   return (
     <div className="flex flex-col items-center">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* Hero Section */}
       <section className="w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center">
@@ -64,7 +91,7 @@ export default function Home() {
       <section className="w-full bg-surface-muted py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="text-h2 mb-4">이런 질문이 있으신가요?</h2>
+            <div className="text-h2 mb-4 font-bold">이런 질문이 있으신가요?</div>
             <p className="text-body text-neutral-600">경기도민이 많이 묻는 핵심 질문을 먼저 정리했습니다. 궁금한 주제부터 바로 확인해보세요.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-3">
@@ -83,7 +110,7 @@ export default function Home() {
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="flex flex-col md:flex-row justify-between items-end mb-10">
           <div>
-            <h2 className="text-h2 mb-4">5대 비전 클리어맵</h2>
+            <div className="text-h2 mb-4 font-bold">5대 비전 클리어맵</div>
             <p className="text-body text-neutral-600">경기도민의 일상과 가장 가까운 다섯 가지 질문 축으로 정책을 정리했습니다.</p>
           </div>
           <Link href="/clearmap">
@@ -94,7 +121,7 @@ export default function Home() {
           {clearMapVisions.map((vision, i) => (
             <Link href={`/clearmap?category=${encodeURIComponent(vision.title)}`} key={i} className="block group">
               <Card className="hover:shadow-md transition-shadow h-full border-line-default group-hover:border-brand-200">
-                <h3 className="text-h3 mb-2 group-hover:text-brand-700">{vision.title}</h3>
+                <div className="text-h3 mb-2 font-bold group-hover:text-brand-700">{vision.title}</div>
                 <p className="text-body text-neutral-600">{vision.desc}</p>
               </Card>
             </Link>
@@ -105,19 +132,19 @@ export default function Home() {
       {/* Trust Block */}
       <section className="w-full bg-surface-muted py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-h2 mb-4">이 답변은 이렇게 검증됩니다</h2>
+          <div className="text-h2 mb-4 font-bold">이 답변은 이렇게 검증됩니다</div>
           <p className="text-body text-neutral-600 mb-10 max-w-2xl mx-auto">누가 답을 만들고, 누가 검수하며, 어떤 기준으로 공개하는지 함께 확인할 수 있습니다.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <Card>
-              <h3 className="text-h3 mb-2">한준호</h3>
+              <div className="text-h3 mb-2 font-bold">한준호</div>
               <p className="text-body text-neutral-600">공식 발화자</p>
             </Card>
             <Card>
-              <h3 className="text-h3 mb-2">김태영 교수</h3>
+              <div className="text-h3 mb-2 font-bold">김태영 교수</div>
               <p className="text-body text-neutral-600">총괄 검수자</p>
             </Card>
             <Card>
-              <h3 className="text-h3 mb-2">한준호 캠프 AI 정책본부</h3>
+              <div className="text-h3 mb-2 font-bold">한준호 캠프 AI 정책본부</div>
               <p className="text-body text-neutral-600">책임 편집 주체</p>
             </Card>
           </div>
@@ -129,7 +156,7 @@ export default function Home() {
 
       {/* Action CTA Section */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <h2 className="text-h2 mb-4">경기도의 질문에 더 가까이 답하겠습니다</h2>
+        <div className="text-h2 mb-4 font-bold">경기도의 질문에 더 가까이 답하겠습니다</div>
         <p className="text-body text-neutral-600 mb-10 max-w-2xl mx-auto">현장의 질문과 제안이 정책을 더 구체적으로 만듭니다. 질문을 남기고, 정책을 제안하고, 투표 일정도 확인하세요.</p>
         <div className="flex flex-wrap justify-center gap-4">
           <Button variant="primary">질문 남기기</Button>

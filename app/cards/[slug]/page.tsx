@@ -97,7 +97,7 @@ export default async function AnswerCardPage({ params }: Props) {
             <Link href="/" className="hover:text-brand-700">홈</Link> &gt; 
             <Link href="/clearmap" className="hover:text-brand-700 ml-1">5대 비전 클리어맵</Link> &gt; 
             <span className="ml-1">{data.category}</span> &gt; 
-            <span className="text-neutral-900 ml-1 font-medium">{data.name}</span>
+            <h1 className="text-neutral-900 ml-1 font-medium inline text-base">{data.name} | 한준호 공식 정책 답변</h1>
           </nav>
           
           <div className="flex gap-2 items-center mb-6">
@@ -109,13 +109,13 @@ export default async function AnswerCardPage({ params }: Props) {
 
           <div className="bg-surface-soft border border-brand-100 rounded-[22px] p-8 mb-8 relative shadow-sm">
             <div className="absolute -top-4 left-8 bg-brand-700 text-white text-caption px-4 py-1 rounded-full font-semibold">도민의 질문</div>
-            <h1 className="text-h2 mt-4 text-brand-900 leading-snug">
+            <h2 className="text-h2 mt-4 text-brand-900 leading-snug">
               &ldquo;{data.user_query}&rdquo;
-            </h1>
+            </h2>
           </div>
           
           <div className="mb-10">
-            <h2 className="text-h3 border-b-2 border-neutral-900 pb-3 mb-6 inline-block">명쾌한 정답</h2>
+            <div className="text-h3 border-b-2 border-neutral-900 pb-3 mb-6 inline-block font-bold">명쾌한 정답</div>
             <p className="text-body-lg text-neutral-900 font-medium leading-relaxed bg-brand-050 p-6 rounded-2xl border border-line-default whitespace-pre-line">
               {data.snippet}
             </p>
@@ -123,7 +123,7 @@ export default async function AnswerCardPage({ params }: Props) {
         </div>
 
         <section className="mb-12">
-          <h2 className="text-h3 mb-6">실행 방안</h2>
+          <div className="text-h3 mb-6 font-bold">실행 방안</div>
           <ul className="list-disc pl-5 space-y-4 text-body text-neutral-700">
             {data.action_plan_1_title && (
               <li>
@@ -151,7 +151,7 @@ export default async function AnswerCardPage({ params }: Props) {
 
         {data.context_impact && (
           <section className="mb-12">
-            <h2 className="text-h3 border-b-2 border-neutral-900 pb-3 mb-6 inline-block">기대 효과 및 맥락</h2>
+            <div className="text-h3 border-b-2 border-neutral-900 pb-3 mb-6 inline-block font-bold">기대 효과 및 맥락</div>
             <p className="text-body text-neutral-700 whitespace-pre-line bg-surface-soft p-6 rounded-2xl">
               {data.context_impact}
             </p>
@@ -159,7 +159,7 @@ export default async function AnswerCardPage({ params }: Props) {
         )}
 
         <section className="mb-12 bg-surface-muted p-8 rounded-[22px]">
-          <h2 className="text-h3 mb-6">작성 · 검수</h2>
+          <div className="text-h3 mb-6 font-bold">작성 · 검수</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <Chip variant="base" className="mb-3">작성</Chip>
@@ -176,7 +176,7 @@ export default async function AnswerCardPage({ params }: Props) {
         </section>
 
         <section className="text-center pt-8 border-t border-line-default">
-          <h2 className="text-h3 mb-6">관련 Answer Card</h2>
+          <div className="text-h3 mb-6 font-bold">관련 Answer Card</div>
           <Link href={`/clearmap?category=${encodeURIComponent(data.category)}`}>
             <Button variant="secondary">같은 비전 답변 더 보기</Button>
           </Link>

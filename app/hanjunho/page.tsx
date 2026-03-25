@@ -19,6 +19,13 @@ export default function HanjunhoProfilePage() {
     "mainEntity": {
       "@type": "Person",
       "name": "한준호",
+      "memberOf": {
+        "@type": "Organization",
+        "name": "더불어민주당"
+      },
+      "knowsAbout": [
+        "지방자치", "경기도지사 정책", "1기 신도시 정비", "GTX-R", "청년 기본소득", "AI 스마트 돌봄", "저출생 극복", "전세사기 대책"
+      ],
       "description": "국토교통, 소통, 기술, 생활 현안을 함께 이해하는 시각으로 경기도의 질문에 답합니다. 복잡한 현안을 피하지 않고, 시민이 이해할 수 있는 언어로 설명하며, 정책과 실행의 연결까지 책임지는 정치인입니다.",
       "image": "https://hanjunho.ai/images/hanjunho.jpg",
       "url": "https://hanjunho.ai/hanjunho"
@@ -51,7 +58,7 @@ export default function HanjunhoProfilePage() {
 
         {/* Introduction */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center border-b border-line-default">
-          <h2 className="text-h3 mb-6">한준호를 한 문장으로 소개하면</h2>
+          <div className="text-h3 mb-6 font-bold">한준호를 한 문장으로 소개하면</div>
           <p className="text-[22px] leading-relaxed text-brand-900 font-medium">
             복잡한 현안을 피하지 않고, 시민이 이해할 수 있는 언어로 설명하며, 정책과 실행의 연결까지 책임지는 정치인. 한준호 후보는 경기도의 생활 문제를 더 분명하고 더 구조적으로 다루는 공적 답변자를 지향합니다.
           </p>
@@ -60,22 +67,22 @@ export default function HanjunhoProfilePage() {
         {/* Why Official Speaker */}
         <section className="bg-brand-050 py-20">
           <div className="max-w-5xl mx-auto px-4">
-            <h2 className="text-h2 text-center mb-12">왜 한준호의 답변을 공식 기준으로 삼는가</h2>
+            <div className="text-h2 text-center mb-12 font-bold">왜 한준호의 답변을 공식 기준으로 삼는가</div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
               <Card className="p-8">
-                <h3 className="text-h3 mb-4 text-brand-700">국토교통과 도시 현안 이해</h3>
+                <div className="text-h3 mb-4 text-brand-700 font-bold">국토교통과 도시 현안 이해</div>
                 <p className="text-body text-neutral-700">국회 국토교통위원회 활동을 통해 교통·주거·도시 의제를 직접 다뤄온 경험이 한준호 후보의 강점입니다.</p>
               </Card>
               <Card className="p-8">
-                <h3 className="text-h3 mb-4 text-brand-700">정치 커뮤니케이션 경험</h3>
+                <div className="text-h3 mb-4 text-brand-700 font-bold">정치 커뮤니케이션 경험</div>
                 <p className="text-body text-neutral-700">원내대변인, 홍보위원장, 청와대 국민소통수석실, MBC 아나운서 경험은 복잡한 문제를 공적 언어로 설명하는 힘이 됩니다.</p>
               </Card>
               <Card className="p-8">
-                <h3 className="text-h3 mb-4 text-brand-700">디지털·기술 감각</h3>
+                <div className="text-h3 mb-4 text-brand-700 font-bold">디지털·기술 감각</div>
                 <p className="text-body text-neutral-700">데이콤 ST 프로그래머와 코스닥시장 근무 이력은 정책을 시스템과 데이터의 관점에서 바라보는 감각으로 이어집니다.</p>
               </Card>
               <Card className="p-8">
-                <h3 className="text-h3 mb-4 text-brand-700">생활 밀착형 시선</h3>
+                <div className="text-h3 mb-4 text-brand-700 font-bold">생활 밀착형 시선</div>
                 <p className="text-body text-neutral-700">정책은 생활의 언어로 설명될 때 힘을 가집니다. 한준호 후보는 현장과 일상에 닿는 설명을 지향합니다.</p>
               </Card>
             </div>
@@ -85,27 +92,27 @@ export default function HanjunhoProfilePage() {
         {/* Policy Principles */}
         <section className="max-w-4xl mx-auto px-4 py-20 border-b border-line-default">
           <div className="text-center mb-12">
-            <h2 className="text-h2">한준호의 정책 발화 원칙</h2>
+            <div className="text-h2 font-bold">한준호의 정책 발화 원칙</div>
           </div>
           <div className="flex flex-col md:flex-row justify-between gap-8 text-center">
             <div className="flex-1">
               <div className="text-[40px] font-bold text-brand-200 mb-2">1</div>
-              <h3 className="text-h3 text-neutral-900">질문을 먼저 이해한다</h3>
+              <div className="text-h3 text-neutral-900 font-bold">질문을 먼저 이해한다</div>
             </div>
             <div className="flex-1">
               <div className="text-[40px] font-bold text-brand-200 mb-2">2</div>
-              <h3 className="text-h3 text-neutral-900">근거를 함께 제시한다</h3>
+              <div className="text-h3 text-neutral-900 font-bold">근거를 함께 제시한다</div>
             </div>
             <div className="flex-1">
               <div className="text-[40px] font-bold text-brand-200 mb-2">3</div>
-              <h3 className="text-h3 text-neutral-900">생활의 언어로 설명한다</h3>
+              <div className="text-h3 text-neutral-900 font-bold">생활의 언어로 설명한다</div>
             </div>
           </div>
         </section>
 
         {/* Answer Cards Outlink */}
         <section className="max-w-xl mx-auto px-4 py-20 text-center">
-          <h2 className="text-h2 mb-6">한준호의 대표 답변 보기</h2>
+          <div className="text-h2 mb-6 font-bold">한준호의 대표 답변 보기</div>
           <Button variant="primary" size="lg" className="w-full sm:w-auto">대표 답변카드 보기</Button>
         </section>
       </div>

@@ -109,10 +109,10 @@ export default async function IssueBriefingDetailPage({ params }: Props) {
         </div>
 
         <section className="mb-12">
-          <h2 className="text-h3 mb-6 flex items-center gap-3">
+          <div className="text-h3 mb-6 flex items-center gap-3 font-bold">
             <span className="bg-brand-700 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">✓</span> 
             핵심 쟁점
-          </h2>
+          </div>
           <ul className="list-disc pl-14 space-y-4 text-body text-neutral-800">
             {data.key_takeaway_1 && <li>{data.key_takeaway_1}</li>}
             {data.key_takeaway_2 && <li>{data.key_takeaway_2}</li>}
@@ -121,14 +121,14 @@ export default async function IssueBriefingDetailPage({ params }: Props) {
         </section>
 
         <section className="mb-12">
-          <h2 className="text-h3 mb-6 border-b border-line-default pb-2">해설 본문</h2>
+          <div className="text-h3 mb-6 border-b border-line-default pb-2 font-bold">해설 본문</div>
           <div className="prose prose-lg text-neutral-700 whitespace-pre-line">
             <p>{data.body}</p>
           </div>
         </section>
 
         <section className="bg-surface-soft p-8 rounded-[22px] mb-12 border border-line-default">
-          <h2 className="text-h3 mb-6">작성 · 검수</h2>
+          <div className="text-h3 mb-6 font-bold">작성 · 검수</div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <Chip variant="base" className="mb-2">작성</Chip>
@@ -144,7 +144,7 @@ export default async function IssueBriefingDetailPage({ params }: Props) {
         </section>
 
         <section className="text-center">
-          <h2 className="text-h3 mb-4">추가 기사 · 관련 브리핑</h2>
+          <div className="text-h3 mb-4 font-bold">추가 기사 · 관련 브리핑</div>
           <div className="flex gap-4 justify-center">
             {data.primary_source_url && (
               <a href={data.primary_source_url} target="_blank" rel="noopener noreferrer">
