@@ -64,6 +64,9 @@ export default async function AdminIssuesPage() {
                       <Link href={`/issues/${briefing.canonical_slug}`} target="_blank">
                         <Button variant="tertiary" size="sm" className="px-3">보기</Button>
                       </Link>
+                      <Link href={`/admin/issues/${briefing.id}/edit`}>
+                        <Button variant="secondary" size="sm" className="px-3">수정</Button>
+                      </Link>
                       <form action={deleteBriefing.bind(null, briefing.id)}>
                         <Button type="submit" variant="tertiary" size="sm" className="px-3 text-red-600 hover:bg-red-50">삭제</Button>
                       </form>
